@@ -14,12 +14,19 @@ type pingRepository struct {
 	PingDao dao.PingDaoInterface
 }
 
-func NewPingRepository (daoInterface dao.PingDaoInterface) *pingRepository{
+func NewPingRepository () *pingRepository{
 	return &pingRepository{}
 }
 
-func (p *pingRepository) GetPingById(id int64) (*entities.PingEntity, error) {
-	p.PingDao.GetPingById(id)
+var(
+	newDao = dao.NewPingDao()
+)
 
-	return nil, nil
+func (p *pingRepository) GetPingById(id int64) (*entities.PingEntity, error) {
+	result, err := newDao.GetPingById(id)
+	if err != nil{
+		return nil, err
+	}
+
+	return result, nil
 }

@@ -23,7 +23,7 @@ func NewPingDao() *pingDao{
 }
 
 func (p *pingDao) GetPingById(id int64) (entity *entities.PingEntity, err error){
-	result := &entities.PingEntity{}
+	result := entities.PingEntity{}
 	stmt, err := mysql.UsersDb.Prepare(queryGetPingById)
 
 	if err != nil{
@@ -32,9 +32,9 @@ func (p *pingDao) GetPingById(id int64) (entity *entities.PingEntity, err error)
 	}
 	defer stmt.Close()
 	queryResult := stmt.QueryRow(id)
-	if err := queryResult.Scan(result.Id, result.Title, result.Body); err != nil{
+	if err := queryResult.Scan(&result.Id, &result.Title, &result.Body, &result.CreatedAt); err != nil{
 		return nil, err
 	}
 
-	return result,nil
+	return &result,nil
 }

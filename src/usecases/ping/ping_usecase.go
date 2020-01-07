@@ -13,12 +13,17 @@ type pingUsecase struct {
 	PingRepo repositories.PingRepositoryInterface
 }
 
-func NewPingUsecase(repositoryInterface repositories.PingRepositoryInterface) *pingUsecase {
+func NewPingUsecase() *pingUsecase {
 	return &pingUsecase{}
 }
 
+var(
+	newPongRepo = repositories.NewPingRepository()
+)
+
 func (p *pingUsecase) GetPongById(id int64) (entity *entities.PingEntity, err error) {
-	result, err := p.PingRepo.GetPingById(id)
+
+	result, err := newPongRepo.GetPingById(id)
 
 	if err != nil {
 		return nil, err
