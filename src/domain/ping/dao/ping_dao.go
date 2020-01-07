@@ -2,6 +2,7 @@ package dao
 
 import (
 	"github.com/takatakayone/vrtravel_user_backend/src/datasources/mysql"
+	"github.com/takatakayone/vrtravel_user_backend/src/domain/ping/datamodels"
 	"github.com/takatakayone/vrtravel_user_backend/src/domain/ping/entities"
 	"log"
 )
@@ -23,7 +24,7 @@ func NewPingDao() *pingDao{
 }
 
 func (p *pingDao) GetPingById(id int64) (entity *entities.PingEntity, err error){
-	result := entities.PingEntity{}
+	pingData := datamodels.Ping{}
 	stmt, err := mysql.UsersDb.Prepare(queryGetPingById)
 
 	if err != nil{
@@ -32,9 +33,11 @@ func (p *pingDao) GetPingById(id int64) (entity *entities.PingEntity, err error)
 	}
 	defer stmt.Close()
 	queryResult := stmt.QueryRow(id)
-	if err := queryResult.Scan(&result.Id, &result.Title, &result.Body, &result.CreatedAt); err != nil{
+	if err := queryResult.Scan(&pingData.Id, &pingData.Title, &pingData.Body, &pingData.CreatedAt); err != nil{
 		return nil, err
 	}
+
+	result := pingData.Mapping()
 
 	return &result,nil
 }
