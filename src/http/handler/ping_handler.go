@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-type HandlePingInterface interface {
+type PingHandleInterface interface {
 	HandlePing(*gin.Context)
 }
 
@@ -15,16 +15,10 @@ type pingHandler struct {
 	PingUsecase ping.PingUsecaseInterface
 }
 
-var(
-	newPingUseCase = ping.NewPingUsecase()
-)
-
-func init() {
-
-}
-
-func NewPingHandler() *pingHandler  {
-	return &pingHandler{}
+func NewPingHandler(usecase ping.PingUsecaseInterface) PingHandleInterface  {
+	return &pingHandler{
+		PingUsecase: usecase,
+	}
 }
 
 func (p *pingHandler) HandlePing(c *gin.Context) {
@@ -34,7 +28,7 @@ func (p *pingHandler) HandlePing(c *gin.Context) {
 		return
 	}
 
-	result, err := newPingUseCase.GetPongById(id)
+	result, err := p.PingUsecase.GetPongById(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())
 		return

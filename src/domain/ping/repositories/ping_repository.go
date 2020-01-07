@@ -14,16 +14,15 @@ type pingRepository struct {
 	PingDao dao.PingDaoInterface
 }
 
-func NewPingRepository () *pingRepository{
-	return &pingRepository{}
+func NewPingRepository (dao dao.PingDaoInterface) PingRepositoryInterface{
+	return &pingRepository{
+		PingDao: dao,
+	}
 }
 
-var(
-	newDao = dao.NewPingDao()
-)
-
 func (p *pingRepository) GetPingById(id int64) (*entities.PingEntity, error) {
-	result, err := newDao.GetPingById(id)
+
+	result, err := p.PingDao.GetPingById(id)
 	if err != nil{
 		return nil, err
 	}

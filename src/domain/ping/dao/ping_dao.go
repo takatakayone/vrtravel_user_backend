@@ -19,7 +19,7 @@ type pingDao struct {
 
 }
 
-func NewPingDao() *pingDao{
+func NewPingDao() PingDaoInterface{
 	return &pingDao{}
 }
 
