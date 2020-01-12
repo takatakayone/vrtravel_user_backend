@@ -13,9 +13,9 @@ type TourGeneralInfo struct {
 	Name string `json:"name"`
 }
 
-func (tg *TourGeneralInfo) Mapping() entities.TourGeneralInfo {
+func (tg *TourGeneralInfo) Mapping() entities.TourInfo {
 
-	return entities.TourGeneralInfo{
+	return entities.TourInfo{
 		Id:				 tg.Id,
 		Title:           tg.Title,
 		TouristSpots:    []entities.TouristSpot{

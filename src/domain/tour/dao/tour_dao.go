@@ -21,7 +21,7 @@ const(
 )
 
 type TourDaoInterface interface {
-	FetchGeneralTourInfosByCountry(string) (*[] *entities.TourGeneralInfo, error)
+	FetchTourInfosByCountry(string) (*[] *entities.TourInfo, error)
 }
 
 type tourDao struct {
@@ -32,7 +32,7 @@ func NewTourDao() TourDaoInterface{
 	return &tourDao{}
 }
 
-func (d *tourDao) FetchGeneralTourInfosByCountry(country string) (*[] *entities.TourGeneralInfo, error) {
+func (d *tourDao) FetchTourInfosByCountry(country string) (*[] *entities.TourInfo, error) {
 
 	stmt, err := mysql.UsersDb.Prepare(queryTourGeneralInfo)
 
@@ -66,12 +66,13 @@ func (d *tourDao) FetchGeneralTourInfosByCountry(country string) (*[] *entities.
 		return nil ,err
 	}
 
-	result :=  make([] *entities.TourGeneralInfo, 0)
+	result :=  make([] *entities.TourInfo, 0)
 	tourIds := make([]int64, 0)
 	for _, tour := range queryResults {
-		var tourGeneralEntity entities.TourGeneralInfo
+		var tourGeneralEntity entities.TourInfo
 
-		// もっとなんとかしたい...すでにtourIdがある場合はすでにあるtourGeneralEntityのTouristSpotsにappendする形。ない場合にはtourEntityを作る感じ。
+		// もっとなんとかしたい...なんか冗長。。
+		//すでにtourIdがある場合はすでにあるtourGeneralEntityのTouristSpotsにappendする形。ない場合にはtourEntityを作る感じ。
 		if contains(tourIds, tour.Id) {
 			tourGeneralInfoEntity := findElementById(result, tour.Id)
 			tourGeneralInfoEntity.TouristSpots = append(tourGeneralInfoEntity.TouristSpots, tour.MappingTouristSpot())
@@ -85,7 +86,7 @@ func (d *tourDao) FetchGeneralTourInfosByCountry(country string) (*[] *entities.
 	return &result, nil
 }
 
-func findElementById(elements [] *entities.TourGeneralInfo, tourId int64) (*entities.TourGeneralInfo) {
+func findElementById(elements [] *entities.TourInfo, tourId int64) (*entities.TourInfo) {
 	for _, element := range elements {
 		if tourId == element.Id {
 			return element

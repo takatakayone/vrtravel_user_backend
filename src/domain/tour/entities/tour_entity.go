@@ -1,6 +1,6 @@
 package entities
 
-type TourGeneralInfo struct {
+type TourInfo struct {
 	Id int64 `json:"id"`
 	Title string `json:"title"`
 	TouristSpots []TouristSpot `json:"tourist_spots"`
