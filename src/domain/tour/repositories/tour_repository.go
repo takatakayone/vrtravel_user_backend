@@ -7,7 +7,7 @@ import (
 )
 
 type TourRepostitoryInterface interface {
-	GetTourInfosByCountry(country string) (*[]*entities.TourInfo, error)
+	GetTourGeneralInfosByCountry(country string) (*[]*entities.TourGeneralInfo, error)
 }
 
 type tourRepo struct {
@@ -18,8 +18,8 @@ func NewTourRepo(dao dao.TourDaoInterface) TourRepostitoryInterface {
 	return &tourRepo{dao: dao}
 }
 
-func (r *tourRepo) GetTourInfosByCountry(country string)(*[] *entities.TourInfo, error) {
-	result, err := r.dao.FetchTourInfosByCountry(country)
+func (r *tourRepo) GetTourGeneralInfosByCountry(country string)(*[] *entities.TourGeneralInfo, error) {
+	result, err := r.dao.FetchTourGeneralInfosByCountry(country)
 	if err != nil {
 		log.Println("error when trying to fetch general info dao")
 		return nil, err

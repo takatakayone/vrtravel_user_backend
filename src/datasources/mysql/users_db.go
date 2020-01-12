@@ -25,7 +25,7 @@ var (
 )
 
 func init() {
-	datasourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8",
+	datasourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=true",
 		username, password, host, schema)
 
 	var err error

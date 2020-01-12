@@ -7,7 +7,7 @@ import (
 )
 
 type TourUsecaseInterface interface {
-	GetTourInfosByCountry(country string) (*[] *entities.TourInfo, error)
+	GetTourGeneralInfosByCountry(country string) (*[] *entities.TourGeneralInfo, error)
 }
 
 type tourUsecase struct {
@@ -18,8 +18,8 @@ func NewTourUseCase(repo repositories.TourRepostitoryInterface) TourUsecaseInter
 	return &tourUsecase{repo:repo}
 }
 
-func (u *tourUsecase) GetTourInfosByCountry(country string)(*[] *entities.TourInfo, error) {
-	result, err := u.repo.GetTourInfosByCountry(country)
+func (u *tourUsecase) GetTourGeneralInfosByCountry(country string)(*[] *entities.TourGeneralInfo, error) {
+	result, err := u.repo.GetTourGeneralInfosByCountry(country)
 	if err != nil{
 		log.Println("error usecase")
 		return nil, err

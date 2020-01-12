@@ -15,5 +15,5 @@ func urlMappings() {
 	tourHandler := handler.NewTourHandler(tour.NewTourUseCase(repositories2.NewTourRepo(dao2.NewTourDao())))
 
 	router.GET("/ping/:id", pingHandler.HandlePing)
-	router.GET("/tour/:country", tourHandler.HandleGetTourInfoByCountry)
+	router.GET("/tour/:country", tourHandler.HandleGetTourGeneralInfoByCountry)
 }

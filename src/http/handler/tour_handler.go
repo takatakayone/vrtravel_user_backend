@@ -7,7 +7,7 @@ import (
 )
 
 type TourHandlerInterface interface {
-	HandleGetTourInfoByCountry(*gin.Context)
+	HandleGetTourGeneralInfoByCountry(*gin.Context)
 }
 
 type tourHandler struct {
@@ -18,13 +18,13 @@ func NewTourHandler(usecase tour.TourUsecaseInterface) TourHandlerInterface  {
 	return &tourHandler{TourUsecase:usecase}
 }
 
-func (p *tourHandler) HandleGetTourInfoByCountry(c *gin.Context) {
+func (p *tourHandler) HandleGetTourGeneralInfoByCountry(c *gin.Context) {
 	country := c.Param("country")
 	if country == "" {
 		c.JSON(http.StatusBadRequest, "errrorr params")
 		return
 	}
-	result, err := p.TourUsecase.GetTourInfosByCountry(country)
+	result, err := p.TourUsecase.GetTourGeneralInfosByCountry(country)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())

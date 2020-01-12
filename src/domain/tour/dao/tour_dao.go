@@ -9,7 +9,7 @@ import (
 
 const(
 	queryTourGeneralInfo =
-	`SELECT  tour.id, tour.title, lo.country, lo.state, lo.city,  ts.name
+	`SELECT  tour.id, tour.title, tsh.start_time, tsh.end_time, lo.country, lo.state, lo.city,  ts.name
 	FROM locations AS lo 
 	JOIN tourist_spots AS ts
 	ON lo.id = ts.location_id
@@ -21,7 +21,7 @@ const(
 )
 
 type TourDaoInterface interface {
-	FetchTourInfosByCountry(string) (*[] *entities.TourInfo, error)
+	FetchTourGeneralInfosByCountry(string) (*[] *entities.TourGeneralInfo, error)
 }
 
 type tourDao struct {
@@ -32,7 +32,7 @@ func NewTourDao() TourDaoInterface{
 	return &tourDao{}
 }
 
-func (d *tourDao) FetchTourInfosByCountry(country string) (*[] *entities.TourInfo, error) {
+func (d *tourDao) FetchTourGeneralInfosByCountry(country string) (*[] *entities.TourGeneralInfo, error) {
 
 	stmt, err := mysql.UsersDb.Prepare(queryTourGeneralInfo)
 
@@ -53,7 +53,7 @@ func (d *tourDao) FetchTourInfosByCountry(country string) (*[] *entities.TourInf
 	queryResults := make([]datamodels.TourGeneralInfo, 0)
 	for rows.Next() {
 		var tourGenralInfo datamodels.TourGeneralInfo
-		if err := rows.Scan(&tourGenralInfo.Id, &tourGenralInfo.Title, &tourGenralInfo.Country, &tourGenralInfo.State, &tourGenralInfo.City, &tourGenralInfo.Name); err != nil{
+		if err := rows.Scan(&tourGenralInfo.Id, &tourGenralInfo.Title, &tourGenralInfo.StartTime, &tourGenralInfo.EndTime ,&tourGenralInfo.Country, &tourGenralInfo.State, &tourGenralInfo.City, &tourGenralInfo.Name); err != nil{
 			log.Println("error when tyring to scan tourgeneral info", err)
 			return nil, err
 		}
@@ -66,15 +66,16 @@ func (d *tourDao) FetchTourInfosByCountry(country string) (*[] *entities.TourInf
 		return nil ,err
 	}
 
-	result :=  make([] *entities.TourInfo, 0)
+	result :=  make([] *entities.TourGeneralInfo, 0)
 	tourIds := make([]int64, 0)
 	for _, tour := range queryResults {
-		var tourGeneralEntity entities.TourInfo
+		var tourGeneralEntity entities.TourGeneralInfo
 
 		// もっとなんとかしたい...なんか冗長。。
 		//すでにtourIdがある場合はすでにあるtourGeneralEntityのTouristSpotsにappendする形。ない場合にはtourEntityを作る感じ。
 		if contains(tourIds, tour.Id) {
-			tourGeneralInfoEntity := findElementById(result, tour.Id)
+			tourGeneralInfoEntity := findTourGeneralEntityById(result, tour.Id)
+			tourGeneralInfoEntity.TourSchedules = append(tourGeneralInfoEntity.TourSchedules, tour.MappingTourSchedule())
 			tourGeneralInfoEntity.TouristSpots = append(tourGeneralInfoEntity.TouristSpots, tour.MappingTouristSpot())
 		} else {
 			tourIds = append(tourIds, tour.Id)
@@ -86,7 +87,8 @@ func (d *tourDao) FetchTourInfosByCountry(country string) (*[] *entities.TourInf
 	return &result, nil
 }
 
-func findElementById(elements [] *entities.TourInfo, tourId int64) (*entities.TourInfo) {
+// 下のふたつの関数化はもっと抽象化してutilsとして使えるようにした方が良さそう。
+func findTourGeneralEntityById(elements [] *entities.TourGeneralInfo, tourId int64) (*entities.TourGeneralInfo) {
 	for _, element := range elements {
 		if tourId == element.Id {
 			return element
