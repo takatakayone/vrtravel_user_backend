@@ -6,8 +6,6 @@ import (
 )
 
 func main() {
-
 	r := registry.NewRegistry()
 	router.NewRouter(r.NewAppHandler())
-
 }

@@ -22,7 +22,7 @@ const(
 )
 
 type tourGeneralInfoRepository struct {
-	//db *sql.DB
+
 }
 
 type TourGenralInfoRepository interface {
