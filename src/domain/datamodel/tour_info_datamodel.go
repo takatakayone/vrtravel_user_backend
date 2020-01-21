@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type TourGeneralInfo struct {
+type TourInfo struct {
 	Id int64 `json:"id"`
 	Title string `json:"title"`
 	StartTime time.Time `json:"start_time"`
@@ -16,8 +16,8 @@ type TourGeneralInfo struct {
 	Name string `json:"name"`
 }
 
-func (tg *TourGeneralInfo) Mapping() entity.TourGeneralInfo {
-	return entity.TourGeneralInfo{
+func (tg *TourInfo) Mapping() entity.TourInfo {
+	return entity.TourInfo{
 		Id:				 tg.Id,
 		Title:           tg.Title,
 		TourSchedules:   []entity.TourSchedule {
@@ -29,7 +29,7 @@ func (tg *TourGeneralInfo) Mapping() entity.TourGeneralInfo {
 	}
 }
 
-func (tg *TourGeneralInfo) MappingTouristSpot () entity.TouristSpot {
+func (tg *TourInfo) MappingTouristSpot () entity.TouristSpot {
 	return entity.TouristSpot{
 		Name:     tg.Name,
 		Location: entity.Location{
@@ -40,7 +40,7 @@ func (tg *TourGeneralInfo) MappingTouristSpot () entity.TouristSpot {
 	}
 }
 
-func (tg *TourGeneralInfo) MappingTourSchedule () entity.TourSchedule {
+func (tg *TourInfo) MappingTourSchedule () entity.TourSchedule {
 	return entity.TourSchedule{
 		StartTime: tg.StartTime,
 		EndTime:   tg.EndTime,

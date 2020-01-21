@@ -5,5 +5,5 @@ import (
 )
 
 func urlMappings(handler handler.AppHandler)  {
-	router.GET("/tour/:country", handler.GetTourGeneralInfoByCountry)
+	router.GET("/tours/:country", handler.GetTourInfoByCountry)
 }

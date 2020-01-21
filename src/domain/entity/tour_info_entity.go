@@ -2,7 +2,7 @@ package entity
 
 import "time"
 
-type TourGeneralInfo struct {
+type TourInfo struct {
 	Id int64 `json:"id"`
 	Title string `json:"title"`
 	TourSchedules []TourSchedule `json:"tour_schedules"`

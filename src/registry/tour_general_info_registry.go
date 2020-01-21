@@ -9,18 +9,18 @@ import (
 	"github.com/takatakayone/vrtravel_user_backend/src/usecase/repository"
 )
 
-func (r *registry) NewTourGeneralInfoHandler() handler.TourGeneralInfoHandler {
+func (r *registry) NewTourGeneralInfoHandler() handler.TourInfoHandler {
 	return handler.NewTourGeneralInfoHandler(r.NewTourGeneralInfoInteractor())
 }
 
-func (r *registry) NewTourGeneralInfoInteractor() interactor.TourGeneralInfoInteractor {
-	return interactor.NewTourGeneralInfoInteractor(r.NewTourGeneralInfoRepository(),r.NewTourGeneralInfoPresenter())
+func (r *registry) NewTourGeneralInfoInteractor() interactor.TourInfoInteractor {
+	return interactor.NewTourInfoInteractor(r.NewTourGeneralInfoRepository(),r.NewTourGeneralInfoPresenter())
 }
 
-func (r *registry) NewTourGeneralInfoRepository() repository.TourGeneralInfoRepository {
-	return ir.NewTourGeneralInfoRepository()
+func (r *registry) NewTourGeneralInfoRepository() repository.TourInfoRepository {
+	return ir.NewTourInfoRepository()
 }
 
-func (r *registry) NewTourGeneralInfoPresenter() presenter.TourGeneralInfoPresenter {
-	return ip.NewTourGeneralInfoPresenter()
+func (r *registry) NewTourGeneralInfoPresenter() presenter.TourInfoPresenter {
+	return ip.NewTourInfoPresenter()
 }

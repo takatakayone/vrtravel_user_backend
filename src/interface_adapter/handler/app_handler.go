@@ -1,5 +1,5 @@
 package handler
 
 type AppHandler interface {
-	TourGeneralInfoHandler
+	TourInfoHandler
 }
